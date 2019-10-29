@@ -470,25 +470,25 @@ a great deal of literature describing testing strategies that address the functi
 little literature describing approaches to this related, but distinct, problem.
 
 In this paper, we therefore address several issues related to
-the testing of resource allocation in systems after the system
+the testing of resource allocation in systems \textit{after} the system
 functionality has been thoroughly tested. The algorithms we
-propose are black-box testing techniques since they do not rely
+propose are \textit{black-box} testing techniques since they do not rely
 at all on details of the implementation. They are examples of
-what are typically called load testing strategies, since they
+what are typically called \textit{load testing} strategies, since they
 assess how the system performs under a, given ‘‘load.’’ The
-strategies we introduce are based on an operational profile
+strategies we introduce are based on an \textit{operational profile}
 which describes the expected workload of the system once it is
 operational in the field [7]. The operational profile for a telecommunications system typically includes the following types
 of information: the number of different types of calls, the average service demands and probability distribution for each type
 of call, and the average external arrival rate and probability
-distribution for each call type. If the same types of calls can be routed through different locations (so-called service centers),
+distribution for each call type. If the same types of calls can be routed through different locations (so-called \textit{service centers}),
 then the routing probabilities between service centers for each
 call type would also typically be included. We have generally
 found the needed operational profile information to be readily
 available for the projects with which we have worked.
 
 In the research literature for local area networks (LANs), a
-distinction is frequently made between hard failures and soft
+distinction is frequently made between \textit{hard failures} and soft
 failures. A hard failure is said to occur when there is a problem that leads to no traffic through the network. This might be
 due to such events as the severance of a network cable leading
 to a physical discontinuity in the network, a power failure, or a
@@ -523,7 +523,7 @@ not abate when the load decreases.
 When doing load testing of telecommunications systems, it
 is extremely unusual to see a hard failure, and as mentioned
 above, systems are typically designed to prevent soft transient
-failures. In fact, at this stage it is unusual to see any type of
+failures. In fact, at this stage it is unusual to see \textit{any} type of
 failure, but among the few failures that we see, the typical failure is a permanent soft failure. That is, a failure typically consists of a situation in which the service provided to some users
 is not entirely acceptable because the system has degraded so
 that full capacity is not available. In this case, calls (or users)
@@ -531,14 +531,211 @@ are lost to the system, even though there are ample resources
 available. In such a situation, once the system enters this type
 of faulty state, the system typically continues to degrade, losing more and more users, or in our environment, preventing
 the completion of increasing numbers of calls. We refer to this
-situation as a smoothly degrading system. It is this type of
+situation as a \textit{smoothly degrading} system. It is this type of
 system and failure that we consider in this paper, and the primary goal of the testing approach that we present here is to
 identify and fix these types of faults, thereby preventing the
 associated soft failures.
 \IEEEpubidadjcol
 
+In [1], a new automatic test case generation strategy for performing load testing for systems that can be modeled by
+Markov chains was proposed. In the current paper, we introduce two additional variants of these algorithms. These new
+strategies increase the class of detectable faults by examining
+not only the amount of resources allocated, but also the order
+of that allocation. For each of the three algorithms, a domain based reliability measure is defined.
 
+The algorithms were used to generate test suites for five industrial telecommunications projects, and our experience is
+reported. Preliminary results are extremely encouraging, and
+are described in Sections 1II.B and 1V.B. In Section V we also
+consider interesting uses of the reliability computation. 
+\section{The Model}
+In this section we include a very brief introduction to
+Markov processes as necessary to understand our test case
+generation approach. A much more thorough description of
+this background material is available in [5]. We also provide a
+brief introduction to the terminology needed to understand the
+application domain in which we have applied our algorithms:
+telecommunications systems.
 
+Let \(X\) be a set of random variables.\(X\) = \{\(x_i\)\}  is said to form a \textit{Markov chain}  provided that the probability that the next state
+is \(x_{m+1}\) is independent of everything other than the current
+state, \(x_m\). Thus, the only way that the past history of the process
+can affect the future is through the current state. This is sometimes known as the \textit{memory less property}.
+
+In the telecommunications application domain, a typical
+state might represent an n-tuple of call types, with the \textit{i}th element of the n-tuple, \(m_i\),  representing the numbers of active
+calls of type \(i\). If the system is in state (\(m_l, m_2, ..., m_i, ..., m_n,\)),and a new call of type \(i\), is placed, the system enters state (\(m_1, m_2, ...,m_i+1, ..., m_n\)). There are typically two types of transitions in these systems: call arrivals and call completions. Associated with each transition is a value representing the call
+arrival or completion rate.
+
+The \textit{holding time} e for a call includes all the time during
+which the call is active, including all the time that the caller is
+using the system. The \textit{call arrival rate }is simply the average rate at which calls of a given type enter the system. Similarly,the call \textit{completion or departure rate} is the rate at which calls leave the system. This is equal to the inverse of the average
+call holding time for that call type, times the number of calls of the given type in the state. Thus, if the average call holding time is two minutes for a call of a given type, then the departure rate for that call type from a state containing \(N_i\) calls of
+that type is \(\frac{N_i}{2}\). \textit{Call blocking} is said to occur if a call cannot be completed because all circuits are already allocated to other calls.
+
+The only continuous-time distribution that exhibits the
+memoryless property is the exponential distribution [5]. We
+therefore require that the average time for a transition out of a state be exponentially distributed: We assume that each call type forms an independent Poisson process with a specified arrival rate, and that call holding times are exponentially distributed. It is generally agreed that most telecommunications systems can be accurately modeled in this way.
+
+One special case of a Markov chain is known as a \textit{birth-death process}, which requires that the only state transitions
+that can occur are between so-called \textit{neighboring states}. That
+is, the states can be numbered in such a way that if \(x_n = i\), then \(x_{n+l}\) must be \(i, i - 1,\) or \(i + 1.\) Viewed from the perspective of a single call type, the systems we consider can be modeled in this way, and we approximate the behavior of actual states of our system which represent vectors of call types by considering the product of these factor solutions.
+
+The general steady-state solution for birth-death queuing
+systems is derived in [5]. 
+
+The solution for this type of system for a single call type is given by: 
+\begin{equation}
+    p_k = \frac{\lambda_0\lambda_1...\lambda_{k-1}}{\mu_1\mu_2...\mu_k}
+\end{equation}
+where \(p_i\) denotes the probability that there are \(i\) calls of the specified type, \(\lambda_i\) denotes the call arrival rate when there are \(i\) active calls of the specified type, and \(\mu_i\) denotes the call
+completion rate when there are \(i\) active calls of the specified type.
+
+Equation (1) can be rewritten as: 
+\begin{equation}
+    p_k=\frac{\lambda_{k-1} }{\mu_k} p_{k-1}
+\end{equation}
+that is, the probability of having \(k\)  calls of a given type at a given time is equal to the probability of having \(k - 1\) calls of that type, times the ratio of the call arrival rate when there are \(k - 1\) calls in the system and the call departure rate when there are \(k\) active calls of the given type.This ratio represents the
+expected number of active calls of the given type. It follows
+immediately from (2) that if  $ \frac{\lambda_{i-1}}{\mu_i}<1 $   , $  p_i < p_{i-1} $ . The condition for the existence of equilibrium probabilities is that
+there exists a $k$ , such that for all   $ i \geq k $ , $ \frac{\lambda_{i-1}}{\mu_i}<1 $ . This observation is important as it will frequently allow us to truncate the
+number of states considered by the algorithms presented in the next section.
+
+In Section 111 we describe a family of three test generation
+algorithms. In the first algorithm, all faults under consideration
+are entirely associated with a state. The second algorithm also
+considers faults which might be associated with individual
+transitions between states, while the third algorithm considers
+subpaths of varying lengths from a given state, back to itself.
+Note that when we assume that the system is being modeled by
+a Markov chain, we do so \textit{only} to derive the steady-state probability distribution for the states, and not for the determination
+of potential faults. Of course, it may be the case that faults
+occur that are dependent on the explicit path exercised, rather
+than being entirely state dependent, and it is for that reason
+that the second and third algorithms are introduced.
+
+The proposed approach is to generate only those software
+states, and hence associated test cases, that have probabilities
+greater than a heuristically computed $\varepsilon$ , and thus represent
+software states that are the most likely to be reached in the
+field. Letting $K$ denote the number of states with probability
+greater than $\varepsilon$ , it follows that $\varepsilon$  and $K$ are related by the           
+steady-state probability distribution, and by the total number of
+calls, $M$, generated by the $K$ test cases. We typically start with
+a small value for $\varepsilon$  and tune it until the number of test cases is
+approximately equal to a number indicated by the testers as
+feasible to perform. This tuning of  $\varepsilon$  is done using a binary search.
+
+The structure of the problem leads to the following recursion: generate the current state and all states derived from it by
+adding one more outstanding call of type $x$, until the test case
+probability is less than $ \varepsilon $.On return, increment to the next type
+of call, and recursively repeat the procedure.
+To simplify the description of the algorithms, we assume
+that call types are sorted by $\frac{\lambda_i}{\mu_i}$. That is, the call type with the
+greatest expected number of active calls will be call type 1, the
+second highest will be type 2, and so on. 
+
+\section{THE MARKOV STATE TESTING APPROACH}
+Deterministic Markov state testing is a test case generation
+and execution approach designed for performing load testing
+for telecommunications software according to an operational
+profile. Note that although we generally speak of applying our
+test case generation algorithms to test the software of telecommunications systems, our procedure is suitable for any
+software systems that meet the above-outlined assumptions,
+with the state appropriately defined. In Section III.B, we will
+present our experience applying these algorithms to perform
+load testing for five industrial software telecommunications
+systems. Of these five projects, only Project 1 has call types as
+the primary operations. This should give the reader a feel for
+the range of applications for which our algorithms can and
+have been used. Throughout the paper, however, we will continue to speak about telephone calls as the primary operations,
+since this is a concrete application that is easy for most readers
+to conceptualize.
+
+A central problem associated with the type of software we
+consider here is that even for systems with a relatively small number of call types, and modest upper bound on the number
+of calls that the system can handle, there will typically be a
+huge number of distinct states. Since each state of the Markov
+chain corresponds to one or more test cases for load testing,
+this translates to a vast amount of required testing if total coverage of the state space is required. For a system that can handle k distinct types of calls, and a maximum of n calls, the
+system would contain   
+$\begin{pmatrix}
+n+k \\
+n
+\end{pmatrix}$  states. Thus, a system that can
+handle a maximum of 24 calls of five distinct types would
+have a total of 1 18,755 Markov states. To test every state once
+would require a total of 5,938 hours of testing, assuming three
+minutes holding time for each call. If the maximum number of
+calls were increased to 500, there would be a total of
+268,3 18,178,226 Markov states requiring over 13,000,000,000
+hours of testing assuming three minutes holding time. Since
+this clearly requires a prohibitive amount of resources, some
+way of intelligently selecting a relatively small subset of these
+potential test cases must be developed. 
+
+Our algorithms therefore involve a recognition that faults
+associated with those states that correspond to the most likely
+states to be executed, translate into failures that are most likely
+to be encountered in the field, and hence situations that are
+most likely to be problematic. Thus, in order to minimize observed field failures, our first test case generation approach
+stresses the testing of those states of the Markov chain that
+have the greatest likelihood of being encountered. Note that a
+Markov chain can be represented by a graph, and hence when
+we speak of edges, paths, or cycles, we are really referring to
+the state transitions and sequences of transitions.
+
+By limiting our first test case generation algorithm to the
+selection of at most one test case per state, there is a tacit assumption being made that the only faults of interest are those
+that are directly associated with a particular state, and not the
+edge or path traversed to arrive at the state. Looking at this
+from a different perspective, this can be viewed as an assumption that all paths to a state are equally likely to be faulty. Although we would certainly not argue that this is a reasonable
+assumption for earlier stages of (functionality) testing, experience has shown that this is frequently reasonable for performing load testing. Typical faults that we expect to be detected by
+this approach involve improper allocation of resources such as
+buffers, demons, or memory, leading to a loss of calls, or a
+store and forward deadlock in a client/server environment.
+
+If in addition to testing state definitions, it is determined
+that the edge taken to the state should also be tested at this
+stage, we provide a second algorithm that generates in order,
+all state transitions such that the product of the state probability and the call arrival rate is greater than $\varepsilon$. . A typical type of
+fault that might be detected by this algorithm is a degradation
+of the number of calls that can be accepted by the system. This
+is a common type of problem for telecommunications systems.
+For example, data from eleven test sessions for an actual industrial project are shown in Table I. The total number of client and subscriber calls made during the run, and the call
+completion rate achieved are shown. These call completion
+rates clearly identify a major degradation in the system avail- \vspace{5cm} 
+
+ability, which is visible to the user as calls unable to complete.
+For this project, originally described in [l], the system was
+rebooted after test sessions three and nine in order to restore
+the system to full capacity as a temporary fix. Once the problem was identified using our approach to the generation of
+load test suites, however, a more satisfactory and permanent
+correction was made. 
+
+\begin{table}[ht]
+    \centering
+    \caption{ADJUNCT SYSTEM TEST RESULTS}
+    \label{tab:my_label}
+    \begin{tabular}{|l|l|l|l|l|}
+\hline
+\begin{tabular}[c]{@{}l@{}}Session\\     \#\end{tabular} & \multicolumn{2}{l|}{Client Calls}                                                                                               & \multicolumn{2}{l|}{Subscriber Calls}                                                                                            \\ \hline
+                                                         & \begin{tabular}[c]{@{}l@{}}Calls\\ Initiated\end{tabular} & \begin{tabular}[c]{@{}l@{}}Call Comp-\\ letion \\ Rate\end{tabular} & \begin{tabular}[c]{@{}l@{}}Calls \\ Initiated\end{tabular} & \begin{tabular}[c]{@{}l@{}}Call Comp-\\ letion \\ Rate\end{tabular} \\ \hline
+1                                                        & 1516                                                      & 97                                                                  & 77                                                         & 99                                                                  \\ \hline
+2                                                        & 1679                                                      & 48                                                                  & 179                                                        & 47                                                                  \\ \hline
+3                                                        & 1578                                                      & 23                                                                  & 261                                                        & 24                                                                  \\ \hline
+4                                                        & 1547                                                      & 100                                                                 & 279                                                        & 96                                                                  \\ \hline
+5                                                        & 1531                                                      & 99                                                                  & 358                                                        & 92                                                                  \\ \hline
+6                                                        & 1360                                                      & 98                                                                  & 402                                                        & 90                                                                  \\ \hline
+7                                                        & 5869                                                      & 40                                                                  & 1328                                                       & 33                                                                  \\ \hline
+8                                                        & 1280                                                      & 20                                                                  & 478                                                        & 26                                                                  \\ \hline
+9                                                        & 4715                                                      & 22                                                                  & 752                                                        & 26                                                                  \\ \hline
+10                                                       & 2668                                                      & 100                                                                 & 511                                                        & 100                                                                 \\ \hline
+11                                                       & 2775                                                      & 100                                                                 & 566                                                        & 98                                                                  \\ \hline
+\end{tabular}
+    
+\end{table}
+Our third algorithm extends the second by considering subpaths rather than individual edges. A typical type of fault that
+might be detected by this algorithm is a memory leak that prevents state reachability. The three test case generation algorithms are presented below. 
 
 
 \end{document}
