@@ -459,6 +459,7 @@ after the load testing algorithms have been used to generate test
 data. Data are presented for the same five industrial telecommunications systems in order to track the reliability as a function of
 the degree of system degradation experienced. \\
 
+\IEEEKey
 \textit{Index Terms\(-\)}Automatic test case generation, software testing,
 reliability assessment, Markov chains.
 \end{abstract}
@@ -478,7 +479,7 @@ what are typically called \textit{load testing} strategies, since they
 assess how the system performs under a, given ‘‘load.’’ The
 strategies we introduce are based on an \textit{operational profile}
 which describes the expected workload of the system once it is
-operational in the field [7]. The operational profile for a telecommunications system typically includes the following types
+operational in the field \cite{b7}. The operational profile for a telecommunications system typically includes the following types
 of information: the number of different types of calls, the average service demands and probability distribution for each type
 of call, and the average external arrival rate and probability
 distribution for each call type. If the same types of calls can be routed through different locations (so-called \textit{service centers}),
@@ -537,7 +538,7 @@ identify and fix these types of faults, thereby preventing the
 associated soft failures.
 \IEEEpubidadjcol
 
-In [1], a new automatic test case generation strategy for performing load testing for systems that can be modeled by
+In \cite{b1}, a new automatic test case generation strategy for performing load testing for systems that can be modeled by
 Markov chains was proposed. In the current paper, we introduce two additional variants of these algorithms. These new
 strategies increase the class of detectable faults by examining
 not only the amount of resources allocated, but also the order
@@ -551,7 +552,7 @@ consider interesting uses of the reliability computation.
 In this section we include a very brief introduction to
 Markov processes as necessary to understand our test case
 generation approach. A much more thorough description of
-this background material is available in [5]. We also provide a
+this background material is available in \cite{b5}. We also provide a
 brief introduction to the terminology needed to understand the
 application domain in which we have applied our algorithms:
 telecommunications systems.
@@ -573,7 +574,7 @@ call holding time for that call type, times the number of calls of the given typ
 that type is \(\frac{N_i}{2}\). \textit{Call blocking} is said to occur if a call cannot be completed because all circuits are already allocated to other calls.
 
 The only continuous-time distribution that exhibits the
-memoryless property is the exponential distribution [5]. We
+memoryless property is the exponential distribution \cite{b5}. We
 therefore require that the average time for a transition out of a state be exponentially distributed: We assume that each call type forms an independent Poisson process with a specified arrival rate, and that call holding times are exponentially distributed. It is generally agreed that most telecommunications systems can be accurately modeled in this way.
 
 One special case of a Markov chain is known as a \textit{birth-death process}, which requires that the only state transitions
@@ -581,7 +582,7 @@ that can occur are between so-called \textit{neighboring states}. That
 is, the states can be numbered in such a way that if \(x_n = i\), then \(x_{n+l}\) must be \(i, i - 1,\) or \(i + 1.\) Viewed from the perspective of a single call type, the systems we consider can be modeled in this way, and we approximate the behavior of actual states of our system which represent vectors of call types by considering the product of these factor solutions.
 
 The general steady-state solution for birth-death queuing
-systems is derived in [5]. 
+systems is derived in \cite{b5}. 
 
 The solution for this type of system for a single call type is given by: 
 \begin{equation}
@@ -789,7 +790,7 @@ might be detected by this algorithm is a memory leak that prevents state reachab
         \end{enumerate}
     \end{enumerate}
 \end{enumerate}
-Several recent papers [2], [3], [4], [lo] have discussed
+Several recent papers \cite{b2}, \cite{b3}, \cite{b4}, [lo] have discussed
 partition testing strategies, or, as they are more properly
 called, sub domain testing strategies. These strategies are characterized by the fact that they first divide the input domain into
 subsets known as sub domains, and then select one or more
@@ -815,7 +816,7 @@ the sub domains has the property that, relative to the class of
 faults being considered, either every element of the sub domain
 is processed correctly or every element of the sub domain is
 processed incorrectly. Sub domains with this property were
-said to be revealing in [11] and homogeneous in [4]. 
+said to be revealing in \cite{b11} and homogeneous in \cite{b4}. 
 
 \subsection{Empirical Results}
 In this section we present our experience working with five
@@ -884,7 +885,7 @@ part, work that they would have done without it.
 Having generated load test suites for the five industrial
 projects, the next problem we address is how to evaluate the
 software that has been so tested. The traditional definition of
-reliability defines $R(t)$ to be the probability of successful operation for a period of time $t$ [6] . Our goal here is to define an appropriate notion of reliability for software that has been load
+reliability defines $R(t)$ to be the probability of successful operation for a period of time $t$ \cite{b6} . Our goal here is to define an appropriate notion of reliability for software that has been load
 tested using the algorithms introduced in Section 111. This requires that the software be model able as a Markov chain and
 also that operational profile information has been collected or
 estimated. In addition, our load testing algorithms are designed
@@ -994,7 +995,7 @@ we are able to see how that reliability computed using our notion of reliability
 user can expect to see, based on their predicted usage. 
 
 \subsection{Reliability Computation}
-In [8] a description of the Nelson model of software reliability is provided. Letting $P$ be a program intended to implement a specification $S$, n be an element of $P^’$s input domain,
+In \cite{b8} a description of the Nelson model of software reliability is provided. Letting $P$ be a program intended to implement a specification $S$, n be an element of $P^’$s input domain,
 $p(n)$ be the probability that input $n$ is selected for $P$, and
 \begin{equation*}
     \alpha(n) = 
@@ -1041,7 +1042,7 @@ program terminates inappropriately. Thus, as long as the output is within a pre 
 correct. 
 
 A further generalization of this approach to reliability was
-introduced in [9]. In this case, $\alpha$ was a tolerance function that
+introduced in \cite{b9}. In this case, $\alpha$ was a tolerance function that
 represented, intuitively, the amount of discrepancy between the
 computed and specified values that would be tolerated. Then,
 the $\alpha$-reliability of program $P$ with respect to specification $S$,
@@ -1085,5 +1086,406 @@ weighted by the appropriate flow. Again, if the DST algorithm
 is used, $\lambda_j$ is always set equal to 1. Note that $s_s(j)$ is always
 greater than $s_p(j)$ and hence the difference in the above definition is always non-negative. 
 
+Letting the set of states that have been tested be denoted by $1,2,\ldots , z ,s_s^i$ denote the intended state corresponding to the $i$ th test case, and $s_p^i$
+ denote the actual state entered by the $i$ th
+test case, then the software reliability after the application of
+one of our test case generation algorithms is given by: \begin{equation}
+    R[p,S](p) = \sum_{i=1}^{z} p(i) 
+    \left [ 1- \frac{d(s_s^i,s_p^i)}{\alpha(s_s^i)} \right ]
+\end{equation}
+
+Thus, the reliability of the program $P$ for a given operational distribution $p$, is defined to be the fraction of the operations completed for each tested state, weighted by the probability associated with that state. Note that since we are typically unable to test all states for a large system,
+$\sum_{i=1}^{z} p(i)$
+will generally be strictly less than 1, since we set $p(i)=0$  if state $i$ is untested. That is, any state that is untested is treated as if it were faulty. This is an important point. Using many proposed
+reliability notions, the reliability of a program which does not
+fail during a small number of test cases is the same as one that
+does not fail after a very large number of test cases. Using our
+notion, however, this is not true. This is further discussed in
+Section V.A. 
+
+Note also, that our notion of reliability is defined from a
+user’s point of view, rather than being defined for the software
+itself. As the operational distribution changes, so does the reliability. The typical user is interested in knowing if they initiate $N$ operations (calls), how many of them they should expect to be completed. 
+
+An obvious question to consider is: how feasible is it to perform the necessary component computations to determine the reliability the user can expect to see? It is first necessary to determine the operational profile for the system under consideration.
+\vspace{2cm}
+
+ As mentioned in Section I, we have generally not
+found it to be difficult to approximate this for the types of telecommunications systems we have considered. Projects typically collect operational usage data during production, and use
+this information to make decisions when building similar systems in the future. A second requirement is the establishment
+and validation of the distance metric $d_\alpha$. For the types of systems we consider, namely those model able by a Markov chain
+in which states represent the number of operations of each
+allowable type associated with the state, this definition is
+straightforward and provided in (4). A tolerance function, a
+must also be determined. Again, for the types of systems to
+which we propose applying our reliability notion, this is
+straightforward, and is defined in (3). Of course, it is also necessary to select a set of test cases. This is done by the automatic test suite generation algorithm (and associated tool) for
+which our reliability notions were defined. It therefore follows,
+that there are no substantial obstacles to the application of our
+reliability definition, for the types of systems for which it was
+designed. 
+
+\subsection{Empirical Results}
+In this section we consider the plausibility of our reliability
+notions, by computing the reliability of the five industrial telecommunications projects described in Section III.B, relative to
+the test suites generated by our tool using the DST algorithm.
+In particular, the last row of Table VI1 shows the reliability for
+the five projects when assessed using our notion of reliability,
+assuming that each system has been run on the generated test
+suite, and that all test cases have run correctly. Under that assumption, the reliability computation reflects the amount of the
+probability mass covered by the test suite. As can be seen,
+each of the systems was considered to be highly reliable using
+our generated test suites and our definition of reliability. 
+
+In order to determine whether the reliability definition is
+reasonable, we felt it was also necessary to see what the assessed reliability would be if each of the systems was in various degraded states. Since it was not feasible to take a system
+and deliberately remove different amounts of the system capacity in order to empirically evaluate the effects on the reliability, we had to devise a way of establishing this without
+actually degrading the system. In order to do this, we simply
+assumed that increasing fractions of the system capacity became unavailable, and computed the amount of operation loss
+due to this degradation. We thereby computed the reliability of
+the resulting system using the actual test suites generated by
+the tool. Thus, for example, for Project 1 run on the DST test
+suite when 10\% of the system capacity was unavailable, the
+reliability was 0.962 as compared to 0.964 when the system
+was fully available. Similar minor decreases in the system reliability were computed for Projects 4 and 5. As mentioned earlier, each of these systems were designed to run at low to medium utilization rates, and therefore have a substantial amount
+of excess capacity available. Thus, although it is possible that
+some of the test cases will require more than 90\% of the system capacity, this should be extremely rare, and this is confirmed in the reliability computation. When the system is further degraded, so that only 80\% of the full capacity is available, it is somewhat more likely that a test case would require
+more than 80\% of the system capacity, but still quite unlikely.
+For Project 1, the reliability of the system which has been
+tested by the generated test suite is .95 when the capacity of
+the system is only 80\% of full capacity. Once a system has lost
+half of its capacity, we would generally expect to be seeing
+significant impact on the reliability computation, since we
+would expect that a fair number of test cases would require
+more than half of the system capacity. This is borne out by the
+reliability computed for Projects 1, 4, and 5. Table VI1 shows
+the reliability degradation as a function of the degradation of
+system capacity for each of the projects. 
+
+The reasons that Projects 2 and 3 reflected such high reliability even at the 50\% capacity level is that in both of these
+cases, the systems were especially over designed, in the sense
+that it was considered very important to have the probability of
+operation loss be extremely small. In both cases, most of the
+probability mass was concentrated in a few states with a small
+number of outstanding operations. Therefore, even when significant system degradation had taken place, the effect on the
+reliability computation was still negligible. In fact, it was not
+until the system had degraded so badly that only 8\% of the
+original capacity was available for Project 2 that the reliability
+fell below 1.0. Even when the system was at only 1\% of full
+capacity, the reliability was still assessed to be .718 indicating
+that a user with this particular operational profile should expect that 71.8\% of their calls will complete even in this extremely degraded state. For Project 3 the reliability was .988
+when the system was at 30\% capacity, and at 20\% capacity,
+the reliability was still .921. When the system was at only 10\%
+of capacity, the decrease in reliability was significant. With
+90\% of the system capacity unavailable, the reliability was
+computed to be .663. 
+
+To underscore the role of the operational profile in the reliability computation, and therefore the way that the reliability is
+customized to a particular user with a particular usage pattern
+reflected by the traffic data, we note that since Projects 2 and 5
+both have three identified operations, they can be thought of as
+being the same system with different operational profiles.
+Therefore, if we consider the traffic data shown in Table I11 to
+be the operational profile information for User A and the traffic data shown in Table VI to be the operational profile information for User B, then we see that the reliability for the software when the system is at 50\% capacity and used by User A
+is 1.0 while the reliability for the same software in the same
+state of degradation when used by User B, who has different
+usage patterns, is .689. Similarly, Projects 3 and 1 can be considered to be the same software being used by different users
+with substantially different usage patterns. If Project 3 corresponds to User C and Project 1 corresponds to User D, then
+the software is considered to be substantially more reliable
+from User C’s perspective than from User D’s perspective.
+
+Recall that because the reliability for full system capacity is
+equal to the probability mass covered by our deterministic
+state testing approach, provided that all test cases are executed
+properly, and states with small probabilities of occurrence are not tested using this approach, the reliability will frequently be
+less than I, even if the full system capacity is available. Note,
+too, that this reliability is concerned only with failures that
+occur as a consequence of improper resource allocation, and
+does not directly account for functional failures. This is because our load testing algorithms are designed to be applied \textit{after} the system’s functionality has been tested at all levels.
+
+At first glance, it might seem somewhat surprising that the
+reliability, as assessed by our measure, is generally higher than
+the degree of system availability. This is because each of the
+systems we considered is designed to operate at low to medium capacity. Thus, even if 20\% of the system capacity is
+unavailable, almost all operations will be able to complete
+normally. Of course, systems that typically operate at much
+higher utilization rates will be much more affected by even
+minor system degradation, and this will, in turn, be reflected in
+the reliability assessment. 
+
+
+\begin{table}[ht]
+    \centering
+    \caption{THE EFFECTS OF CAPACITY DEGRADATION ON THE
+            RELIABILITY COMPUTATION}
+    \label{tab:my_label}
+    \begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\begin{tabular}[c]{@{}l@{}}Available\\ Capacity\end{tabular} & Project 1 & Project 2 & Project 3 & Project 4 & Project 5 \\ \hline
+.5                                                           & 0.748     & 1.000     & 1.000     & 0.786     & 0.689     \\ \hline
+.6                                                           & 0.852     & 1.000     & 1.000     & 0.885     & 0.820     \\ \hline
+.7                                                           & 0.917     & 1.000     & 1.000     & 0.941     & 0.922     \\ \hline
+.8                                                           & 0.950     & 1.000     & 1.000     & 0.968     & 0.975     \\ \hline
+.9                                                           & 0.962     & 1.000     & 1.000     & 0.977     & 0.990     \\ \hline
+1.0                                                          & 0.964     & 1.000     & 1.000     & 0.978     & 0.992     \\ \hline
+\end{tabular}
+\end{table}
+
+\section{APPLICATIONS OF THE RELIABILITY MEASURE}
+In the previous sections, we have introduced a formal notion
+of reliability, defined relative to a software system, a test suite,
+and an operational distribution, and have examined the computed reliability of five industrial software systems in varying
+stages of degradation. One way that we used the computed
+reliability value was to consider the effects on the system performance that a given user (with a given operational profile)
+can expect to see as different amounts of the system capacity
+become unavailable. We saw that for Project 5, for example, a
+user with the given operational profile should expect to see a
+significant impact on the percentage of calls they can expect to
+have complete normally when 50\% of the system’s capacity is
+unavailable. In contrast, for Project 2, the loss of the same
+percentage of system capacity should have no noticeable effects on the user. This implies that the user of Project 2 would
+likely consider the software to be significantly more reliable
+than the user of Project 5.
+
+In this section we consider other possible uses of our approach to reliability assessment. In Section V.A we investigate
+the possible use of our reliability measure during test planning
+to function as an indicator of the amount of testing that will be
+required to reach some prescribed reliability value. In that
+case, our generation tool can be used to create a load test suite
+that will cause the system to meet the desired reliability value
+provided they all execute properly. 
+
+In Section V.B we also investigate the use of our reliability
+computation as an indication of the severity of possible resource allocation faults.
+
+\subsection{Tracking System Test Progress}
+During testing, failures are detected and removed in a continuous interaction between the system test team and the development teams. Reliability growth will occur using our
+definition, when the fault removal process is successfd and as
+increasing amounts of evidence have been provided. In order
+to track progress during the system testing phase, while using
+deterministic state testing, it is therefore important to have a
+model of reliability growth that is applicable as soon as failures are detected that is sensitive to both the detection and
+correction of faults and the amount of testing done. 
+
+For this reason, we decided to investigate the use of (5) for
+tracking system test progress. In particular, we used the cumulative reliability computed as a function of the number of test
+cases, as the basis for a system test tracking tool. Figs. 1-5
+show the cumulative reliability, as assessed using the notion
+introduced in Section IV.A, for Projects 1-5, respectively. Recall that these are not randomly selected test cases. The first
+test cases selected in each case are those that cover the greatest
+amount of the probability mass. 
+
+We see that, as might be expected, in all five cases, reliability increases very quickly during the initial set of test cases if
+no failures occur. For Project 1, .9 reliability was reached after
+5,014 test cases had been executed, for Project 2, .9 was
+reached after 3 test cases, for Project 3, .9 was reached after 27
+test cases, for Project 4, .9 was reached after 847 test cases,
+and for Project 5, .9 was reached after 2,140 test cases had
+been run. The differences in the rates at which the different
+projects reach the .9 level simply reflect the differences in the
+probability distributions representing the operational profiles.
+For Project 2, the bulk of the probability mass was concentrated in three states. For Project I, in contrast, the distribution
+was much more uniform. Recall that in all cases, the test suites
+were selected expressly to cover as much of the operational
+distribution as possible. 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth, height= 0.2\textwidth]{figure1.PNG}
+    \caption{ Project 1}
+    
+\end{figure}
+
+After the .9 level was reached, in all five cases, the increase in reliability was clearly significantly slower. In particular, for Project I, the next 19,478 test cases accounted for an increase in reliability of 0.06. For Project 2, the next 51 test cases accounted for an increased reliability of 0.07, while for Project 3, the next 82 test cases accounted for an increased reliability of 0.09. For Project 4, the next 3,703 test cases accounted for an increased reliability of 0.08, while for Project 5, 22,860 additional test cases, contributed only 0.09 to the reliability. This clearly indicates a cost-benefit trade off that is worth further investigation, and is at least indicative of a testing strategy when resources are very limited, and testing must be curtailed sooner than would otherwise be desirable. 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth, height= 0.2\textwidth]{figure2.PNG}
+    \caption{ Project 2}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth, height= 0.2\textwidth]{figure3.PNG}
+    \caption{ Project 3}
+\end{figure}
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth, height= 0.2\textwidth]{figure4.PNG}
+    \caption{ Project 4}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth, height= 0.2\textwidth]{figure5.PNG}
+    \caption{ Project 5}
+\end{figure}
+It may also provide useful insights for test planning, and the initial establishment of schedules. In particular, since by using Formula 5, we are able to analytically compute the reliability
+of the software relative to a given test suite without actually
+running the software, we can use that computation to help the
+tester determine the minimal amount of testing necessary to
+guarantee a certain level of reliability assuming that there is no
+operation loss. Notice that we are not suggesting that we assess
+the reliability of the software without running the software on
+the test suite. We are merely saying that it can be useful to get
+an upper bound on the value of reliability that our measure will
+provide, simply by assuming that all test cases run perfectly. In
+that case, the reliability is just the amount of the probability
+mass that has been covered by the test suite. If a test suite covers very little of the probability mass representing the operational profile, then very little evidence has been presented to
+the user that the software is likely to perform acceptably in
+their environment. It does not indicate that the software will
+behave poorly, only that the testing is not sufficient to warrant
+user confidence.
+
+\subsection{Failure Severity Classification }
+There are essentially two reasons why multi-user software
+systems, such as the types of telecommunications systems we
+studied, might experience the loss of calls (or other inputs) to
+the system. The first situation happens when a burst of activity
+occurs, requiring more resources than the system has available.
+In the case of telecommunications systems, if the total number
+of active calls plus the number of incoming calls exceeds the
+system's capacity, some calls will be lost. Once the load decreases, the system resumes normal operation. Of course, even
+though no actual failures have occurred, from the user's perspective, there has been a decrease in reliability, since the call
+they tried to place was not completed, and this is reflected in
+our reliability computation. 
+
+The second situation occurs when there is a fault in the system. In this case, calls (or users) are lost to the system, even
+though there are ample resources available. It is this type of
+fault condition that is of interest here. 
+
+One of the advantages of being able to compute a reliability
+value corresponding to fault-free system behavior without actually running the software, is that it provides a baseline that
+can be used for comparison for a given operational profile and
+test suite. Therefore, when a system fails on some elements of
+a test suite, the reliability can be computed for the faulty version of the system. At the same time, we can compute the reliability of the same test suite assuming the system performed
+flawlessly. This difference in reliability computation can then
+be used as the basis for an individualized notion of failure severity, where failure severity is often categorized according to
+the impact on the system availability. For example one might
+define a Severity 1 fault to mean that the system is totally unavailable, a Severity 2 to mean that a major system degradation has occurred, and so forth. 
+
+Of course, in some environments, the loss of any operations,
+even the most minimal amount, is intolerable. In other environments, in contrast, a significant amount of operations can
+be lost before the user considers the failure severe. Thus the
+same amount or percentage decrease in the computed reliability for a given fault might be rated as a severity 1 failure by
+one project and as a severity 2 or 3 failure by another. 
+
+\section{CONCLUSIONS}
+In this paper, we have presented three algorithms for automatically generating test suites to test the resource allocation
+behavior of software systems that are model able by Markov
+chains. We have built a tool that does the automatic test suite
+generation and used it to generate suites for five large industrial software telecommunications systems. These initial results
+are extremely encouraging, with projects reporting the detection of serious program faults that they predict would not have
+been detected until field release, had these algorithms not been
+used. They also report a greatly facilitated regression testing
+and fault localization capability due to the use of these
+algorithms. 
+
+We also introduced a new approach to software reliability to
+be used to assess software that has been tested using our load
+testing algorithms, and applied this definition to assess the
+reliability of the five industrial systems we tested. Since all of
+the systems that we tested were designed to run at low to medium utilization rates, it therefore follows that the amount of
+excess capacity available in these systems makes it unlikely
+that there will be many failures encountered in practice, even
+when the system is running in a degraded state. For this reason,
+we investigated the effects on the reliability computation of
+varying degrees of system degradation relative to a particular
+operational distribution. We have applied this approach to
+assess the five industrial telecommunications projects for
+which we generated test suites, and presented data showing the
+expected reliability for each project under different circumstances. We have also considered two possible applications of
+our reliability measure. In the first case, we discussed the use
+of the reliability notion to track the progress of our load testing
+algorithms, and to use it to guide test planning. We also proposed a way to use our reliability notion to guide the user in
+the assessment of the severity of observed failures. 
+
+We are very encouraged by the plausibility of our initial results. In each case, the results that we obtained when computing the reliability of systems relative to a particular operational
+distribution, were consistent with our intuitive expectations.
+We therefore intend to continue applying our notion of reliability to other industrial projects, as they reach the load testing phase of development, after we apply our algorithms to
+generate test suites. We are optimistic that the combination of
+our automatic test suite generation algorithms, and the application of our approach to reliability assessment and reliability based system test tracking, will be very useful for projects that
+can be appropriately modeled. 
+
+Because we have derived a relationship between the reliability of smoothly degrading systems, and the operational
+distribution, it should be possible to consider the incremental
+calculation of reliability for projects as their operational distributions change due to changes in the system requirements, or
+as a reflection of the environmental conditions of a new customer. We also plan to consider the application of these notions to domains other than telecommunications systems. 
+
+\begin{thebibliography}{}
+\bibitem{b1}A. Avritzer and B. Larson, “Load testing software using deterministic
+state testing,” T. Ostrand and E. Weyuker, eds., Proc. of the 1993 Int’I
+Symp. on Software Testing and Analysis (ISSTA). ACM Press, June 1993, pp. 82-88.
+
+\bibitem{b2}J.W. Duran and S.C. Ntafos, “An evaluation of random testing.” IEEE
+Transactions on Software Engineering, vol. 10, no. 4, July 1984, pp.
+438444. 
+
+\bibitem{b3}P.G. Frank1 and E.J. Weyuker, “Provable improvements on branch
+testing,” IEEE Transactions on Software Engineering, vol. 19, no. 10, Oct. 1993, pp. 962-975. 
+
+\bibitem{b4}R. Hamlet and R. Taylor, “Partition testing does not inspire confidence,” Proc. Second Workshop on Software Testing, Verification, and
+Analysis, Banff, Canada, Ju!y 1988, pp. 206-215. 
+
+\bibitem{b5}L. Kleinrock, Queueing Systems, Volume 1: Theory. New York: WileyInterscience, 1975. 
+
+\bibitem{b6}J.D. Musa, A. Iannino, and K. Okumoto, Software Reliability Measurement, Prediction, Application. New York: McGraw-Hill, 1987. 
+
+\bibitem{b7}J.D. Musa, “Operational profiles in software reliability engineering,”
+IEEE Software, vol. IO, no. 2, Mar. 1993, pp. 14-32. 
+
+\bibitem{b8}T.A. Thayer, M. Lipow, and E.C. Nelson, Software Reliability. New
+York: North-Holland, 1978. 
+
+\bibitem{b9}S.N. Weiss and E. Weyuker, “An extended domain-based model of
+software reliability,” IEEE Transactions on Software Engineering, vol.
+14, no. 10, Oct. 1988, up. 1,512-1.524. 
+
+\bibitem{b10}E.J. Weyuker and B. Jeng, “Analyzing partition testing strategies,”
+IEEE Transactions on Software Engzneering, vol. 17, no. 7, July 1991, pp. 703-7 1 1. 
+
+\bibitem{b11}E.J. Weyuker and T.J. Ostrand, “Theories of program testing and the
+application of revealing subdomains,” IEEE Transactions on Software
+Engineering, vol. 6, no. 3, Mar. 1980, pp. 23&245. 
+
+
+
+\end{thebibliography}
+
+
+
+\textit{Alberto Avriher} received a PhD in computer science from the University of California, Los Angeles,
+an MSc in computer science from the Federal University of Minas Gerais, Brazil, and the BSc in
+computer engineering from the Technion, Israel
+lnstitute of Technology. He is currently a member of
+the technical staff in the Operations Technology
+Center at AT&T Bell Labofatories at Middletown,
+N.J. He spent the summer of 1987 at IBM Research
+at Yorktown Heights His research interests are in
+software engineering, particularly software testing
+and reliability, real-time systems, and performance modeling, and has published several papers in those areas. He is a member of ACM SIGSOFT and
+IEEE. 
+
+\textit{Elaine Weyuker} received a PhD in computer science from Rutgers University, and an MSE from the
+Moore School of Electrical Engineering, University
+of Pennsylvania. She is currently a distinguished
+member of the technical staff in the Software and
+Systems Research Center at AT&T Bell Laboratories
+at Murray Hill, N.J , and a professor of computer
+science at the Courant Institute of Mathematical
+Sciences of New York University Before coming to
+NYU, she was on the faculty of the City University
+of New York, was a systems engineer for IBM, and
+was a programmer for Texaco, Inc Her research interests are in software
+engineering, particularly software testing and reliability, and software complexity measures, and has published many papers in those areas. She is also
+interested in the theory of computation, and is the author of a book (with
+Martin Davis and Ron Sigal), Computubdity, Complexity, and Languages,
+published by Academic Press, 1994. She is currently a member of the editorial board of ACM Transactions on Sofhyare Engineering and Methodologv
+(TOSEM). She has been the Secretatymreasurer of ACM SIGSOFT, a member of the Executive Committee of the IEEE Computer Society Technical
+Committee on Software Engineering and an ACM National Lecturer. She has
+also been a member of the ACM Committee on the Status of Women and
+Minorities, and of the CRA Committee on the Status of Women. 
 
 \end{document}
