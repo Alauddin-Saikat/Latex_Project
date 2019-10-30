@@ -880,6 +880,210 @@ without the use of the technique. In addition, the extra cost of
 using this approach was minimal, since it replaced, in large
 part, work that they would have done without it. 
 
-\section{SOFTWARE EVALUATIO}
+\section{SOFTWARE EVALUATION}
+Having generated load test suites for the five industrial
+projects, the next problem we address is how to evaluate the
+software that has been so tested. The traditional definition of
+reliability defines $R(t)$ to be the probability of successful operation for a period of time $t$ [6] . Our goal here is to define an appropriate notion of reliability for software that has been load
+tested using the algorithms introduced in Section 111. This requires that the software be model able as a Markov chain and
+also that operational profile information has been collected or
+estimated. In addition, our load testing algorithms are designed
+to detect a particular class of problems: resource allocation
+faults. We emphasize that the notion of reliability that we introduce in Section 1V.A is proposed as appropriate only under
+these circumstances. We further stress that whenever we use
+the word “reliability,” we refer to the notion we define below,
+rather than the traditional notion of reliability. We emphasize,
+too, that the measure we propose is defined relative to a particular user. This perspective is important since when a potential customer considers the use of a software system, they want
+to know how they can expect it to perform in their
+environment. 
+\vspace{2cm}
+\begin{table}[ht]
+    \centering
+    \caption{PROJECT 1 CALL TRAFFIC DATA}
+    \label{tab:my_label}
+    \begin{tabular}{|l|l|l|}
+\hline
+Call Type                                                                     & \begin{tabular}[c]{@{}l@{}}Avg Arr Rate \\ (calls/min)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Avg Hldg Time\\ (min)\end{tabular} \\ \hline
+Client call completes to subscriber                                           & 3.3                                                                 & 3.0                                                           \\ \hline
+\begin{tabular}[c]{@{}l@{}}Client call cannot\\ reach subscriber\end{tabular} & 0.823                                                               & 3.0                                                           \\ \hline
+\begin{tabular}[c]{@{}l@{}}Subscriber - update\\ profile\end{tabular}         & 0.588                                                               & 2.0                                                           \\ \hline
+\begin{tabular}[c]{@{}l@{}}Subscriber - check\\ status\end{tabular}           & 0.297                                                               & 1.0                                                           \\ \hline
+Subscriber - access voice mail                                                & 0.588                                                               & 5.0                                                           \\ \hline
+\end{tabular}
+\end{table}
+
+
+
+\begin{table}[ht]
+    \centering
+    \caption{PROJECT 2 CALL TRAFFIC DATA}
+    \label{tab:my_label}
+    \begin{tabular}{|l|l|l|}
+\hline
+Call Type         & \begin{tabular}[c]{@{}l@{}}Avg Arr Rate\\ (call/sec)\end{tabular} & Avg Hldg Time(sec) \\ \hline
+User Provisioning & 0.0 1667                                                          & 30.0               \\ \hline
+Maintenance       & 0.0037                                                            & 10.0               \\ \hline
+File Transfer     & 0.00056                                                           & 30.0               \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+    \centering
+    \caption{PROJECT 3 CALL TRAFFIC DATA}
+    \label{tab:my_label}    \begin{tabular}{|l|l|l|}
+\hline
+Call Type            & \begin{tabular}[c]{@{}l@{}}Avg Arr Rate\\ (call/sec)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Avg Hldg Time\\ (sec)\end{tabular} \\ \hline
+Triggers for Node    & 0.0024                                                            & 8.0                                                           \\ \hline
+File Transfer        & 0.006                                                             & 30.0                                                          \\ \hline
+Triggers for Access  & 0.0016                                                            & 8.0                                                           \\ \hline
+Database             & 0.186                                                             & 15.0                                                          \\ \hline
+Interface Management & 0.026                                                             & 15.0                                                          \\ \hline
+\end{tabular}
+\end{table}
+
+There are two components to the notion we propose. The
+first component reflects how well the software functions. For \vspace{5cm}
+the systems we were concerned with, this typically equates to the fraction of calls or other operations that have properly
+completed. That is, not only are we interested in whether or
+not a failure occurred, we are also interested in the magnitude
+of the operation loss as an indicator of system degradation.
+Note that since our test suites are generated based on a user’s
+operational profile, the behavior of the system on the test suite
+should be closely related to the behavior the user can expect to
+see once the software is in production in their environment. 
+
+\begin{table}[ht]
+    \centering
+    \caption{PROJECT 4 CALL TRAFFIC DATA}
+    \label{tab:my_label}
+    \begin{tabular}{|l|l|l|}
+\hline
+Call Type & \begin{tabular}[c]{@{}l@{}}Avg Arr Rate\\ (call/sec)\end{tabular} & Avg Hldg Time(sec) \\ \hline
+Close     & 0.0675                                                            & 5.19               \\ \hline
+Open      & 0.2777                                                            & 41.14              \\ \hline
+Update    & 0.071388                                                          & 41.59              \\ \hline
+List      & 0.205                                                             & 5.90               \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+    \centering
+    \caption{PROJECT 5 CALL TRAFFIC DATA }
+    \label{tab:my_label}
+    \begin{tabular}{|l|l|l|}
+\hline
+Call Type       & \begin{tabular}[c]{@{}l@{}}Avg Arr Rate\\ (call/sec)\end{tabular} & Avg Hldg Time(sec) \\ \hline
+Demand Request  & 31.0                                                              & 1.0                \\ \hline
+Control Request & 18.3                                                              & 1.0                \\ \hline
+Echo Request    & 2.2                                                               & 1.0                \\ \hline
+\end{tabular}
+\end{table}
+
+Of course, one way to cause the software to exhibit few
+faults is to do very little testing. Therefore, if our approach to
+the assessment of the software only reflects the behavior of the
+software on the test suite, one can get a misleading picture of
+the software’s true behavior. For this reason, we include in our
+assessment, a second component that reflects the amount of
+evidence that has been presented while trying to determine
+how well the software behaves. We define our notion of reliability in Section IV.A, and in Section 1V.B we discuss our
+experience applying this notion to the five projects outlined
+above. In addition, we investigate the effects on the reliability
+computation of a change in the operational profile. In this wily,
+we are able to see how that reliability computed using our notion of reliability really captures the behavior that a particular
+user can expect to see, based on their predicted usage. 
+
+\subsection{Reliability Computation}
+In [8] a description of the Nelson model of software reliability is provided. Letting $P$ be a program intended to implement a specification $S$, n be an element of $P^’$s input domain,
+$p(n)$ be the probability that input $n$ is selected for $P$, and
+\begin{equation*}
+    \alpha(n) = 
+\begin{cases}
+    0& \text{if } P(n) = S(n) \\
+    1              & \text{otherwise}
+\end{cases}
+\end{equation*}
+
+then $\sum_{n\varepsilon D} p(n) \alpha(n)$ ) is the probability that a run of program $P$
+with input $n$ chosen according to the probability distribution $p$
+will result in a failure. It then follows that 
+\vspace{3cm}
+\begin{equation*}
+    R(P)=1-\sum_{n\varepsilon D}p(n)\alpha(n) = \sum_{n\varepsilon D}p(n)(1-\alpha(n)) 
+\end{equation*}
+is the probability that a run with input $n$ chosen according to $p$
+will result in a correct execution. This can be viewed as the
+reliability of the program $P$ for the operational distribution $p(n)$.is the probability that a run with input $n$ chosen according to $p$
+will result in a correct execution. This can be viewed as the
+reliability of the program $P$ for the operational distribution
+$p(n)$. $p$ is used, in a sense, to weight the importance of a failure
+caused by input $n$. $\alpha$ is used here as a way of indicating
+whether the output is correct or not. Each output is viewed, in
+this definition, as being either right or wrong.
+
+To address the computation of the program reliability in
+environments where there is a less clear-cut distinction between successful execution and failure, the binary definition of
+success/failure was replaced by a measure of the “closeness”
+of the program behavior and its specification. 
+
+Nelson provided a slight generalization of this reliability
+notion by defining
+\begin{equation*}
+    \alpha(n)=
+    \begin{cases}
+    0   & \text{if } x|P(n) - S(n) |\leq \Delta\\
+    1    & \text{otherwise}.
+\end{cases}
+\end{equation*}
+Note that $\alpha(n)$ might be 1 either because $|P(n) - S(n) | > \Delta$  ,
+or because the program fails to halt on input $n$, or because the
+program terminates inappropriately. Thus, as long as the output is within a pre specified tolerance, $\Delta$, it is viewed as being
+correct. 
+
+A further generalization of this approach to reliability was
+introduced in [9]. In this case, $\alpha$ was a tolerance function that
+represented, intuitively, the amount of discrepancy between the
+computed and specified values that would be tolerated. Then,
+the $\alpha$-reliability of program $P$ with respect to specification $S$,
+was defined to be: 
+\begin{equation*}
+    R[\alpha,p,S](P)=1-\sum_{n=0}^{\infty} \frac{p(n) d_\alpha (P,S,n)}{\alpha(n)}
+\end{equation*}
+
+where $d_\alpha$,  is a distance function indicating the difference between program $P$ and specification $S$, relative to $\alpha$. Thus, the
+reliability of a program decreases as the magnitude of the discrepancies between the actual outputs, and the specified outputs increase, relative to $\alpha(n)$. As $\alpha(n)$ grows, small differences become less important in this definition.
+
+We now adapt this generalized domain-based reliability notion for programs being load tested using the deterministic
+state testing approach described in Section 111. These algorithms are designed to expose resource allocation problems.
+For a deterministic state testing application with $k$ operations,
+each Markov state $s$ represents a $k$-dimensional vector, with
+each element of the vector representing the number of active
+operations of the given type. For a telecommunications system,
+these operations are typically calls. We will generally be interested in comparing the intended state (i.e., corresponding to
+the calls actually submitted) and the actual state (i.e., corresponding to the calls actually processed), and examining the
+amount of operation loss. As mentioned above, we are intending our notion to provide the tester or proposed user with an
+indication of how the software will behave in a particular environment reflected in the operational profile, using evidence
+collected by having run a particular test suite. 
+
+Letting $s$, denote the state corresponding to the calls submitted, $s_p$ denote the state corresponding to the calls actually
+processed, $s(j)$ denote the component of state $s$ associated with
+call type $j$, and $\lambda_j$ denote the call arrival rate for call type $j$, we
+define 
+\begin{equation}
+    \alpha(s)= \sum_{j=1}^{k} \lambda_j s(j).
+\end{equation}
+Thus, $\alpha(s)$  is simply the total number of calls or operations
+associated with state $s$, weighted by the flow associated with
+an edge (in the case of the TDST algorithm) or a cycle (for the
+CDST algorithm). When the DST algorithm is used to generate test suites, $\lambda_j$ is set equal to 1 for all $j$. In that case, $\alpha(s)$
+reduces to the total number of calls (or other operations) associated with state $s$. We therefore define  
+\begin{equation}
+    d(s_s,s_p)=\sum_{j=1}^{k} \lambda_j(s_s(j) - s_p(j) )
+\end{equation}
+which is the number of lost operations associated with state $s_s$,
+weighted by the appropriate flow. Again, if the DST algorithm
+is used, $\lambda_j$ is always set equal to 1. Note that $s_s(j)$ is always
+greater than $s_p(j)$ and hence the difference in the above definition is always non-negative. 
+
 
 \end{document}
